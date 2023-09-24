@@ -1,3 +1,18 @@
 body {
-  background-color: greenyellow;
+  background-color: lightblue;
+}
+
+section{
+  display: grid;
+  place-items: center;
+  align-self: center;
+  min-height: 100vh;
+}
+
+.hidden {
+  opacity: 0;
+  transition: all 1s;
+}
+.show{
+  opacity: 1;
 }
