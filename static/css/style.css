@@ -1,5 +1,7 @@
 body {
-  background-color: lightblue;
+  background-color: #F8F0E5;
+  color: #0F2C59;
+  
 }
 
 section{
@@ -11,8 +13,54 @@ section{
 
 .hidden {
   opacity: 0;
+  filter: blur(5px);
+  transform: translateX(-100%);
   transition: all 1s;
 }
 .show{
   opacity: 1;
+  filter: blur(0);
+  transform: translateX(0);
+  
+}
+
+@media(prefers-reduced-motion){
+  .hidden{
+    transition: none;
+  }
+}
+
+h1 {
+  font-family: 'Caveat' ;font-size: 22px; 
+}
+
+
+#gradient-background {
+  height: 600px;
+   background: linear-gradient(62deg, #EE7752, #E73C7E, #23A6D5, #23D5AB);
+     animation: gradient 15s ease infinite; 
+      background-size: 400% 400%;
+  
+}
+@-webkit-keyframes gradient{
+  0% {
+    background-position: 0 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+     background-position: 0% 50%;
+  }
+}
+@keyframes gradient{
+  0% {
+    background-position: 0 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+     background-position: 0% 50%;
+  }
 }
