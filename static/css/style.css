@@ -1,14 +1,12 @@
-body {
-  background-color: #F8F0E5;
-  color: #0F2C59;
-  
-}
-
-section{
+section {
   display: grid;
   place-items: center;
   align-self: center;
   min-height: 100vh;
+}
+
+.custom-background {
+  background-color: #260E69; /* Zmiana koloru tła na czarny */
 }
 
 .hidden {
@@ -17,32 +15,58 @@ section{
   transform: translateX(-100%);
   transition: all 1s;
 }
-.show{
+
+.show {
   opacity: 1;
   filter: blur(0);
   transform: translateX(0);
-  
 }
 
-@media(prefers-reduced-motion){
-  .hidden{
+@media (prefers-reduced-motion) {
+  .hidden {
     transition: none;
   }
 }
 
+
+
+/* fonts */
 h1 {
-  font-family: 'Caveat' ;font-size: 22px; 
+  font-family: "Gagalin", Courier;
+  font-size: 22px;
+  color: white;
+  text-shadow: 5px 5px #9340FF;
+  align-self: right;
 }
+h3 {
+  color: white;
+  font-family: "Caveat", Courier;
+}
+h2 {
+  color: white;
+  font-family: "Quicksand", Courier;
+}
+/* fonts */
 
 
-#gradient-background {
+
+/* gradient */
+.gradient-background {
   height: 600px;
-   background: linear-gradient(62deg, #EE7752, #E73C7E, #23A6D5, #23D5AB);
-     animation: gradient 15s ease infinite; 
-      background-size: 400% 400%;
-  
+  background: linear-gradient(62deg, #1F41BB, #260E69, #9340FF,);
+  animation: gradient 15s ease infinite;
+  background-size: 400% 400%;
 }
-@-webkit-keyframes gradient{
+
+.custom-shape{
+  height: 600px;
+  background: linear-gradient(62deg, #1F41BB, #260E69, #9340FF);
+  animation: gradient 15s ease infinite;
+  background-size: 400% 400%;
+}
+
+
+@-webkit-keyframes gradient {
   0% {
     background-position: 0 50%;
   }
@@ -50,10 +74,11 @@ h1 {
     background-position: 100% 50%;
   }
   100% {
-     background-position: 0% 50%;
+    background-position: 0% 50%;
   }
 }
-@keyframes gradient{
+
+@keyframes gradient {
   0% {
     background-position: 0 50%;
   }
@@ -61,6 +86,112 @@ h1 {
     background-position: 100% 50%;
   }
   100% {
-     background-position: 0% 50%;
+    background-position: 0% 50%;
   }
 }
+/* gradient */
+
+
+/* circle */
+.circle {
+  position: relative;
+  height: 700px;
+  width: 700px;
+  border-radius: 50%;
+  display: inline-flex;
+  vertical-align: top;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  text-decoration: none;
+  border: 0;
+  margin: 10px;
+}
+
+.circle:hover:after {
+  opacity: 1;
+  color: transparent;
+}
+
+.circle:hover {
+  color: transparent;
+}
+
+.ccont {
+  display: inline-block;
+  margin: 10px;
+}
+
+.ccont:hover {
+  color: transparent;
+}
+/* circle */
+
+
+
+
+/* padding into a main text */
+
+.mt-0 {
+  margin-top: 0 !important;
+}
+
+.ml-1 {
+  margin-left: ($spacer * .25) !important;
+}
+
+.px-2 {
+  padding-left: ($spacer * .5) !important;
+  padding-right: ($spacer * .5) !important;
+}
+
+.p-3 {
+  padding: $spacer !important;
+}
+
+/* padding into a main text */
+
+
+
+/* circle text rotation */
+.is-hidden {
+  display: none !important;
+}
+.PageBackToWork {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  color: white;
+
+  font-family: 'Roboto', sans-serif;
+  font-weight: bold;
+}
+.PageBackToWork-heading {
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: calc(56px + (72 - 56) * ((100vw - 480px) / (1200 - 480)));
+}
+@media (min-width: 1200px) {
+  .PageBackToWork-heading {
+    font-size: 72px;
+  }
+}
+.PageBackToWork-heading-rotationTextContainer {
+  position: relative;
+}
+.PageBackToWork-heading-rotationText {
+  display: inline-block;
+  position: relative;
+}
+.PageBackToWork-heading-rotationText.is-inactive {
+  position: absolute;
+  right: 0;
+  bottom: 100%;
+}
+.PageBackToWork-heading-itText {
+  display: inline-block;
+  font-size: 70px;
+  padding-right: 20px;
+}
+/* circle text rotation */
