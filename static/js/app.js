@@ -1,41 +1,77 @@
-const typedTextSpan = document.querySelector(".typed-text");
-const cursorSpan = document.querySelector(".cursor");
+// get the element
+const text = document.querySelector('.typing-text');
 
-const textArray = ["hard", "fun", "a journey", "LIFE"];
-const typingDelay = 200;
-const erasingDelay = 100;
-const newTextDelay = 2000; // Delay between current and next text
-let textArrayIndex = 0;
-let charIndex = 0;
+// make a words array
+const words = [
+  "#korepetycje_online",
+  "#matura",
+  "#egzamin_8_klasisty",
+  "#zadania",
+  "#egzamin",
+  "#kolokwium",
+  "#sprawdzian",
+  
 
-function type() {
-  if (charIndex < textArray[textArrayIndex].length) {
-    if(!cursorSpan.classList.contains("typing")) cursorSpan.classList.add("typing");
-    typedTextSpan.textContent += textArray[textArrayIndex].charAt(charIndex);
-    charIndex++;
-    setTimeout(type, typingDelay);
-  } 
-  else {
-    cursorSpan.classList.remove("typing");
-  	setTimeout(erase, newTextDelay);
+
+];
+
+// start typing effect
+setTyper(text, words);
+
+function setTyper(element, words) {
+
+  const LETTER_TYPE_DELAY = 75;
+  const WORD_STAY_DELAY = 2000;
+
+  const DIRECTION_FORWARDS = 0;
+  const DIRECTION_BACKWARDS = 1;
+
+  var direction = DIRECTION_FORWARDS;
+  var wordIndex = 0;
+  var letterIndex = 0;
+
+  var wordTypeInterval;
+
+  startTyping();
+
+  function startTyping() {
+    wordTypeInterval = setInterval(typeLetter, LETTER_TYPE_DELAY);
+  }
+
+  function typeLetter() {
+    const word = words[wordIndex];
+
+    if (direction == DIRECTION_FORWARDS) {
+      letterIndex++;
+
+      if (letterIndex == word.length) {
+        direction = DIRECTION_BACKWARDS;
+        clearInterval(wordTypeInterval);
+        setTimeout(startTyping, WORD_STAY_DELAY);
+      }
+
+    } else if (direction == DIRECTION_BACKWARDS) {
+      letterIndex--;
+
+      if (letterIndex == 0) {
+        nextWord();
+      }
+    }
+
+    const textToType = word.substring(0, letterIndex);
+
+    element.textContent = textToType;
+  }
+
+  function nextWord() {
+
+    letterIndex = 0;
+    direction = DIRECTION_FORWARDS;
+    wordIndex++;
+
+    if (wordIndex == words.length) {
+      wordIndex = 0;
+    }
+
   }
 }
-
-function erase() {
-	if (charIndex > 0) {
-    if(!cursorSpan.classList.contains("typing")) cursorSpan.classList.add("typing");
-    typedTextSpan.textContent = textArray[textArrayIndex].substring(0, charIndex-1);
-    charIndex--;
-    setTimeout(erase, erasingDelay);
-  } 
-  else {
-    cursorSpan.classList.remove("typing");
-    textArrayIndex++;
-    if(textArrayIndex>=textArray.length) textArrayIndex=0;
-    setTimeout(type, typingDelay + 1100);
-  }
-}
-
-document.addEventListener("DOMContentLoaded", function() { // On DOM Load initiate the effect
-  if(textArray.length) setTimeout(type, newTextDelay + 250);
-});

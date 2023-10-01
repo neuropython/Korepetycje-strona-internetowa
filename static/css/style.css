@@ -8,23 +8,44 @@
 @import url('https://fonts.googleapis.com/css2?family=Akshar:wght@400;700&family=Barlow:wght@100&display=swap');
 h1{
   font-family: 'Barlow', sans-serif;
-  color: whitesmoke;
 }
-h2, h3,h4{
+h2, h3{
   color: black;
   font-family: 'Barlow', sans-serif;
 }
-h5 {
+h4 {
   color: white;
   font-family: "Quicksand", Courier;
 }
+h5 {
+  color: #9400FF;
+  font-family: "Quicksand", Courier;
+}
 /* fonts */
+
+#gradient_gg{
+	background: linear-gradient(-45deg, #212529, #EBEAF9,);
+	background-size: 400% 400%;
+	animation: gradient 15s ease infinite;
+	height: 100vh;
+} 
+@keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
 
 
 
 /* gradient */
 .gradient_bg {
-	background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+	background: linear-gradient(-45deg, #e0445b, #BB86FC, #6F4EB0, #EBEAF9);
 	background-size: 400% 400%;
 	animation: gradient 15s ease infinite;
 	height: 100vh;
@@ -48,7 +69,7 @@ h5 {
 .button {
   display: inline-flex;
   height: 100px;
-  width: 375px;
+  width: 300px;
   border: 2px solid #BFC0C0;
   margin: 50px 50px 50px 50px;
   color: white;
@@ -94,5 +115,18 @@ a {
 
 #button-2:hover a {
   color: #2D3142;
+}
+
+.typing-text::after {
+  content: "|";
+  animation: blink ease 1s infinite;
+}
+
+@keyframes blink {
+  0%, 100% {
+    opacity: 0;
+  } 50% {
+    opacity: 1;
+  }
 }
 
