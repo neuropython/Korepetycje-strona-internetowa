@@ -1,22 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script defer src="../static/js/app.js"></script>
-    <link href="https://fonts.cdnfonts.com/css/gagalin" rel="stylesheet">
-    <link rel="stylesheet" href="../static/css/header.css" />
-    {{ bootstrap.load_css() }}
-  </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>main_site</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Akshar:wght@400;700&family=Barlow:wght@100&display=swap');
 
-  <body>
-    <header class="p-3 text-bg-dark">
-    <div class="container">
-      <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-        <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-          <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
- width="40.000000pt" height="32.000000pt" viewBox="0 0 597.000000 900.000000"
+    </style>
+    <link rel="stylesheet" href="../static/css/style.css" />
+        
+</head>
+<body class="custom-background">
+        <div class="px-4 py-5 my-5 text-center  gradient_bg">
+            <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
+ width="100.000000pt" height="130.000000pt" viewBox="0 0 597.000000 900.000000"
  preserveAspectRatio="xMidYMid meet">
 <metadata>
 Created by potrace 1.10, written by Peter Selinger 2001-2011
@@ -143,39 +141,21 @@ m1211 -1173 l953 -953 -27 -49 c-25 -45 -50 -74 -65 -74 -4 0 -419 411 -923
 1406 7 5 164 8 348 6 l335 -2 0 -1560z"/>
 </g>
 </svg>
-
-
-        </a>
-
-        <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-          <li><a href="#" class="nav-link px-2 text-secondary">Główna strona</a></li>
-          <li><a href="#" class="nav-link px-2 text-white">Dla korepetytora</a></li>
-          <li><a href="#" class="nav-link px-2 text-white">Dla ucznia</a></li>
-          <li><a href="#" class="nav-link px-2 text-white">Regulamin</a></li>
-          <li><a href="#" class="nav-link px-2 text-white">O nas</a></li>
-        </ul>
-
-        <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
-          <div class = 'search-box'>
-            <input class = "search-text" type="text" placeholder = "Wyszukaj">
-          <a href="#" class = "search-btn">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="bi bi-search" viewBox="0 0 16 16">
-              <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-            </svg>
-          </a>
-          
-        </div>
-        </form>
-
-        <div class="text-end">
-          <button type="button" class="btn btn-outline-light me-2" id= 'Rejestracja'>Zaloguj się</button>
-          <button type="button" class="btn btn-warning">Rejestracja</button>
-        </div>
-        
-      </div>
-      
-    </div>
-    
-  </header>
-  </body>
+            <h2 class="display-1 fw-bold text-body-emphasis lh-1 mb-3 m-2">#korepetycje_online</h2>
+            <h1 class="display-1 fw-bold text-body-emphasis lh-1 mb-3 m-2">Tylko z nami!!</h1>
+            <div class="col-lg-6 mx-auto">
+              <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                <div class="button" id="button-2">
+                    <div id="slide"></div>
+                    <a href="#">Jestem uczniem</a>
+                  </div>
+                  <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                    <div class="button" id="button-2">
+                        <div id="slide"></div>
+                        <a href="#">Jestem korepetytorem</a>
+                      </div>
+              </div>
+            </div>
+          </div>
+</body>
 </html>

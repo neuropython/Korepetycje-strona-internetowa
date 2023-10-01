@@ -1,48 +1,20 @@
-section {
-  display: grid;
-  place-items: center;
-  align-self: center;
-  min-height: 100vh;
-}
-
 .custom-background {
-  background-color: #260E69; /* Zmiana koloru tła na czarny */
-}
-
-.hidden {
-  opacity: 0;
-  filter: blur(5px);
-  transform: translateX(-100%);
-  transition: all 1s;
-}
-
-.show {
-  opacity: 1;
-  filter: blur(0);
-  transform: translateX(0);
-}
-
-@media (prefers-reduced-motion) {
-  .hidden {
-    transition: none;
-  }
+  background-color: #212529; 
 }
 
 
 
 /* fonts */
-h1 {
-  font-family: "Gagalin", Courier;
-  font-size: 22px;
-  color: white;
-  text-shadow: 5px 5px #9340FF;
-  align-self: right;
+@import url('https://fonts.googleapis.com/css2?family=Akshar:wght@400;700&family=Barlow:wght@100&display=swap');
+h1{
+  font-family: 'Barlow', sans-serif;
+  color: whitesmoke;
 }
-h3 {
-  color: white;
-  font-family: "Caveat", Courier;
+h2, h3,h4{
+  color: black;
+  font-family: 'Barlow', sans-serif;
 }
-h2 {
+h5 {
   color: white;
   font-family: "Quicksand", Courier;
 }
@@ -51,147 +23,76 @@ h2 {
 
 
 /* gradient */
-.gradient-background {
-  height: 600px;
-  background: linear-gradient(62deg, #1F41BB, #260E69, #9340FF,);
-  animation: gradient 15s ease infinite;
-  background-size: 400% 400%;
-}
-
-.custom-shape{
-  height: 600px;
-  background: linear-gradient(62deg, #1F41BB, #260E69, #9340FF);
-  animation: gradient 15s ease infinite;
-  background-size: 400% 400%;
-}
-
-
-@-webkit-keyframes gradient {
-  0% {
-    background-position: 0 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
+.gradient_bg {
+	background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+	background-size: 400% 400%;
+	animation: gradient 15s ease infinite;
+	height: 100vh;
 }
 
 @keyframes gradient {
-  0% {
-    background-position: 0 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
 }
+
 /* gradient */
 
-
-/* circle */
-.circle {
-  position: relative;
-  height: 700px;
-  width: 700px;
-  border-radius: 50%;
+/* button */
+.button {
   display: inline-flex;
-  vertical-align: top;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-  text-decoration: none;
-  border: 0;
-  margin: 10px;
-}
-
-.circle:hover:after {
-  opacity: 1;
-  color: transparent;
-}
-
-.circle:hover {
-  color: transparent;
-}
-
-.ccont {
-  display: inline-block;
-  margin: 10px;
-}
-
-.ccont:hover {
-  color: transparent;
-}
-/* circle */
-
-
-
-
-/* padding into a main text */
-
-.mt-0 {
-  margin-top: 0 !important;
-}
-
-.ml-1 {
-  margin-left: ($spacer * .25) !important;
-}
-
-.px-2 {
-  padding-left: ($spacer * .5) !important;
-  padding-right: ($spacer * .5) !important;
-}
-
-.p-3 {
-  padding: $spacer !important;
-}
-
-/* padding into a main text */
-
-
-
-/* circle text rotation */
-.is-hidden {
-  display: none !important;
-}
-.PageBackToWork {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+  height: 100px;
+  width: 375px;
+  border: 2px solid #BFC0C0;
+  margin: 50px 50px 50px 50px;
   color: white;
-
-  font-family: 'Roboto', sans-serif;
-  font-weight: bold;
-}
-.PageBackToWork-heading {
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  font-size: calc(56px + (72 - 56) * ((100vw - 480px) / (1200 - 480)));
+  text-decoration: none;
+  font-size: 2em;
+  letter-spacing: 1.5px;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
 }
-@media (min-width: 1200px) {
-  .PageBackToWork-heading {
-    font-size: 72px;
-  }
+
+a {
+  color: white;
+  text-decoration: none;
+  letter-spacing: 1px;
 }
-.PageBackToWork-heading-rotationTextContainer {
+
+#button-2 {
   position: relative;
+  overflow: hidden;
+  cursor: pointer;
 }
-.PageBackToWork-heading-rotationText {
-  display: inline-block;
+
+#button-2 a {
   position: relative;
+  transition: all .35s ease-Out;
 }
-.PageBackToWork-heading-rotationText.is-inactive {
+
+#slide {
+  width: 100%;
+  height: 100%;
+  left: -400px;
+  background: white;
   position: absolute;
-  right: 0;
-  bottom: 100%;
+  transition: all .35s ease-Out;
+  bottom: 0;
 }
-.PageBackToWork-heading-itText {
-  display: inline-block;
-  font-size: 70px;
-  padding-right: 20px;
+
+#button-2:hover #slide {
+  left: 0;
 }
-/* circle text rotation */
+
+#button-2:hover a {
+  color: #2D3142;
+}
+
