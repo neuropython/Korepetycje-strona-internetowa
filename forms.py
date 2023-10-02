@@ -19,29 +19,8 @@ class TutoringPostForm(FlaskForm):
     submit = SubmitField('Dodaj Post')
 
 
-
-# Create a RegisterForm to register new users
-class UczenRegisterForm(FlaskForm):
-    email = StringField("Email", validators=[DataRequired(), Email()])
-    password = PasswordField(
-        "Password",
-        validators=[
-            DataRequired(),
-            Length(min=8, message="Hasło musi mieć co najmniej 8 znaków."),
-            Regexp(r'(?=.*\d)', message="Hasło musi zawierać co najmniej jedną cyfrę."),
-            Regexp(r'(?=.*[A-Z])', message="Hasło musi zawierać co najmniej jedną wielką literę."),
-            Regexp(r'(?=.*[a-z])', message="Hasło musi zawierać co najmniej jedną małą literę."),
-            Regexp(r'(?=.*[!@#$%^&*])', message="Hasło musi zawierać co najmniej jeden ze znaków specjalnych (!@#$%^&*).")
-        ]
-    )
-    confirm_password = PasswordField("Confirm Password", validators=[DataRequired(), EqualTo('password', message='Passwords must match.')])
-    name = StringField("Imię", validators=[DataRequired()])
-    surname = StringField("Nazwisko", validators=[DataRequired()])
-    phone_number = StringField("Numer telefonu", validators=[DataRequired()])
-    submit = SubmitField("Sign Me Up!")
-
-
-class KorepetytorRegisterForm(FlaskForm):
+class RegisterForm(FlaskForm):
+    who = SelectField('Jestem', choices=['Uczniem', 'Korepetytorem'], validators=[DataRequired()])
     email = StringField("Email", validators=[DataRequired(), Email(message="Nieprawidłowy format adresu email.")])
     password = PasswordField(
         "Password",
@@ -64,6 +43,7 @@ class KorepetytorRegisterForm(FlaskForm):
 
 # Create a LoginForm to login existing users
 class LoginForm(FlaskForm):
+    who = SelectField('Jestem', choices=['Uczniem', 'Korepetytorem'], validators=[DataRequired()])
     email = StringField("Email", validators=[DataRequired()])
     password = PasswordField("Password", validators=[DataRequired()])
     submit = SubmitField("Let Me In!")

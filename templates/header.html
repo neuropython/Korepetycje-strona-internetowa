@@ -148,7 +148,7 @@ m1211 -1173 l953 -953 -27 -49 c-25 -45 -50 -74 -65 -74 -4 0 -419 411 -923
         </a>
 
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-          <li><a href="#" class="nav-link px-2 text-secondary">Główna strona</a></li>
+          <li><a href="{{url_for('home')}}" class="nav-link px-2 text-secondary">Główna strona</a></li>
           <li><a href="#" class="nav-link px-2 text-white">Dla korepetytora</a></li>
           <li><a href="#" class="nav-link px-2 text-white">Dla ucznia</a></li>
           <li><a href="#" class="nav-link px-2 text-white">Regulamin</a></li>
@@ -168,8 +168,8 @@ m1211 -1173 l953 -953 -27 -49 c-25 -45 -50 -74 -65 -74 -4 0 -419 411 -923
         </form>
 
         <div class="text-end">
-          <button type="button" class="btn btn-outline-light me-2" id= 'Rejestracja'>Zaloguj się</button>
-          <button type="button" class="btn btn-outline-light" id = 'button_bg'>Rejestracja</button>
+          <button onclick="location.href='{{url_for('login')}}'" type="button" class="btn btn-outline-light me-2" id= 'Rejestracja'>Zaloguj się</button>
+          <button onclick="location.href='{{url_for('register')}}'" type="button" class="btn btn-outline-light" id = 'button_bg'>Rejestracja</button>
         </div>
         
       </div>

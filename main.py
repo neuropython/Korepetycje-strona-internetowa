@@ -4,7 +4,7 @@ from flask_ckeditor import CKEditor
 from flask_login import UserMixin, login_user, LoginManager, current_user, logout_user
 from functools import wraps
 from werkzeug.security import generate_password_hash, check_password_hash
-from forms import TutoringPostForm, AvailabilityForm, LoginForm, UczenRegisterForm, KorepetytorRegisterForm, ConfirmEmailForm
+from forms import TutoringPostForm, AvailabilityForm, LoginForm, RegisterForm, ConfirmEmailForm
 from classes import db, Post, User, Availability
 from datetime import timedelta, datetime
 from flask_mail import Mail, Message
@@ -65,7 +65,7 @@ def role_required(role):
         def decorated_function(*args, **kwargs):
             if not current_user.is_authenticated:
                 flash("Musisz się zalogować, aby uzyskać dostęp do tej strony!", "danger")
-                return redirect(url_for('login', mode=role))
+                return redirect(url_for('login'))
 
             if current_user.user_type != role or not current_user.email_confirmed:
                 flash("Dostęp ograniczony!", "warning")
@@ -156,22 +156,16 @@ def home():
     return render_template("index.html")
 
 
-@app.route('/register/<mode>', methods=["GET", "POST"])
-def register(mode):
-    if mode == 'u':
-        form = UczenRegisterForm()
-    elif mode == 'k':
-        form = KorepetytorRegisterForm()
-    else:
-        flash("Invalid registration mode.")
-        return redirect(url_for("home"))
+@app.route('/register', methods=["GET", "POST"])
+def register():
+    form = RegisterForm()
 
     if form.validate_on_submit():
         existing_user = User.query.filter_by(email=form.email.data).first()
 
         if existing_user:
             flash("You've already signed up with that email, log in instead!")
-            return redirect(url_for('login', mode=mode))
+            return redirect(url_for('login',))
 
         hash_and_salted_password = generate_password_hash(
             form.password.data,
@@ -179,7 +173,7 @@ def register(mode):
             salt_length=8
         )
         confirmation_code = str(random.randint(100000, 999999))
-
+        mode = 'u' if form.who.data == 'Uczniem' else 'k'
         new_user = User(
             user_type=mode,
             email=form.email.data,
@@ -187,10 +181,10 @@ def register(mode):
             surname=form.surname.data,
             password=hash_and_salted_password,
             phone_number=form.phone_number.data,
+            bank_acc_num=form.bank_acc_num.data,
             email_confirmation_code=confirmation_code
+
         )
-        if mode == 'k':
-            new_user.bank_acc_num = form.bank_acc_num.data
 
         db.session.add(new_user)
         db.session.commit()
@@ -206,27 +200,28 @@ def register(mode):
     return render_template('register.html', form=form)
 
 
-@app.route('/login/<mode>', methods=["GET", "POST"])
-def login(mode):
+@app.route('/login', methods=["GET", "POST"])
+def login():
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data, user_type=mode).first()
+        user = User.query.filter_by(email=form.email.data).first()
 
         if not user:
             flash("That email does not exist, please try again.")
-            return redirect(url_for('login', mode=mode))
+            return redirect(url_for('login'))
         elif check_password_hash(user.password, form.password.data):
             if not user.email_confirmed:
                 flash("Please confirm your email before logging in.")
                 return redirect(url_for("confirm_email", user_id=f"{user.id}"))
 
             login_user(user)
+            mode = form.who.data
             return redirect(url_for('uczen' if mode == 'u' else 'korepetytor'))
         else:
             flash('Password incorrect, please try again.')
-            return redirect(url_for('login', mode=mode))
+            return redirect(url_for('login'))
 
-    return render_template("login.html", form=form, mode=mode)
+    return render_template("login.html", form=form)
 
 
 @app.route('/confirm-email/<user_id>', methods=["GET", "POST"])
