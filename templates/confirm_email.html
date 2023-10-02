@@ -1,0 +1,11 @@
+ <h2>Confirm Your Email</h2>
+    <form method="post">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            {{ form.confirmation_code.label }}
+            {{ form.confirmation_code(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.submit(class="btn btn-primary") }}
+        </div>
+    </form>

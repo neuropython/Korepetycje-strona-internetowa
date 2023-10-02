@@ -1,0 +1,75 @@
+<form method="post" novalidate>
+    {{ form.hidden_tag() }}
+
+    <label>{{ form.subject.label }}</label>
+    {{ form.subject }}
+    <br>
+
+    <label>{{ form.hours_per_lesson.label }}</label>
+    {{ form.hours_per_lesson }}
+    <br>
+
+    <label>{{ form.lessons_per_week.label }}</label>
+    {{ form.lessons_per_week }}
+    <br>
+
+    <h3>Harmonogram dostępności</h3>
+    <table id="availability-table">
+        <thead>
+            <tr>
+                <th>Godzina</th>
+                <th>Pon</th>
+                <th>Wt</th>
+                <th>Śr</th>
+                <th>Czw</th>
+                <th>Pi</th>
+                <th>Sob</th>
+                <th>Nied</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for hour in range(6, 22) %}
+            <tr>
+                <td>{{ hour }}:00 - {{ hour+1 }}:00</td>
+                {% for day in range(1, 8) %}
+                <td>
+                    <div class="availability-cell" data-day="{{ day }}" data-hour="{{ hour }}"></div>
+                    <input type="hidden" name="availabilities-{{ day }}-{{ hour }}" value="0">
+                </td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <br>
+
+    {{ form.submit() }}
+</form>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const cells = document.querySelectorAll('.availability-cell');
+        cells.forEach(cell => {
+            cell.addEventListener('click', function() {
+                cell.classList.toggle('selected');
+                const day = cell.getAttribute('data-day');
+                const hour = cell.getAttribute('data-hour');
+                const input = document.querySelector(`input[name="availabilities-${day}-${hour}"]`);
+                input.value = input.value === '0' ? '1' : '0';
+            });
+        });
+    });
+</script>
+
+<style>
+    .availability-cell {
+        width: 30px;
+        height: 30px;
+        border: 1px solid black;
+        cursor: pointer;
+    }
+
+    .availability-cell.selected {
+        background-color: green;
+    }
+</style>
