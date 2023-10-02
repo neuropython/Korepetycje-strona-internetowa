@@ -1,64 +1,70 @@
-from datetime import date
-from flask import Flask, abort, render_template, redirect, url_for, flash
-from flask_bootstrap import Bootstrap5
-from flask_ckeditor import CKEditor
-from flask_gravatar import Gravatar
-from flask_login import UserMixin, login_user, LoginManager, current_user, logout_user
+from flask_login import UserMixin
 from flask_sqlalchemy import SQLAlchemy
-from functools import wraps
-from werkzeug.security import generate_password_hash, check_password_hash
+from sqlalchemy import Table, ForeignKey, Column, Integer, String, Float, Time, Boolean
 from sqlalchemy.orm import relationship
-import os
-
 
 db = SQLAlchemy()
 
-# CONFIGURE TABLES
+# ------------------------------ tabele dostępnmych dni -----------------------------------  #
+
+
+class DayOfWeek(db.Model):
+    __tablename__ = "days_of_week"
+    id = Column(Integer, primary_key=True)
+    name = Column(String(20), unique=True)  # np. "Poniedziałek", "Wtorek" itp.
+
+
 class Post(db.Model):
     __tablename__ = "posty"
-    id = db.Column(db.Integer, primary_key=True)
+    id = Column(Integer, primary_key=True)
+    author_id = Column(Integer, ForeignKey("users.id"))
+    author = relationship("User", back_populates="posts")
+    subject = Column(String(250), unique=True, nullable=False)
+    hours_per_lesson = Column(Float, nullable=False)
+    lessons_per_week = Column(Integer, nullable=False)
 
-    #Create Foreign Key, "users.id" the users refers to the tablename of User.
-    author_id = db.Column(db.Integer, db.ForeignKey("uczniowie.id"))
-    #Create reference to the User object, the "posts" refers to the posts protperty in the User class.
-    author = relationship("Uczen", back_populates="posts")
-
-    subject = db.Column(db.String(250), unique=True, nullable=False)
-    hours_per_lesson = db.Column(db.Float, nullable=False)
-    lessons_per_week = db.Column(db.Ineger, nullable=False)
-    weekday = db.Column(db.String(250), nullable=False)
-    hours = db.Column(db.Text, nullable=False)
+    # Relacja do dostępności
+    availabilities = relationship("Availability", back_populates="post")
 
 
-class Uczen(UserMixin, db.Model):
-    __tablename__ = "uczniowie"
-    id = db.Column(db.Integer, primary_key=True)
+class Availability(db.Model):
+    __tablename__ = "availabilities"
+    id = Column(Integer, primary_key=True)
+    post_id = Column(Integer, ForeignKey("posty.id"))
+    day_id = Column(Integer, ForeignKey("days_of_week.id"))
+    time_slot = Column(String(20), nullable=False)  # np. "6-7", "7-8" itd.
+
+    post = relationship("Post", back_populates="availabilities")
+    day = relationship("DayOfWeek")
+
+# ------------------------------ tabele użytkowników -----------------------------------  #
+
+# Tabela asocjacyjna dla relacji many-to-many między Uczen a Korepetytor
+association_table = db.Table('korepetytor_uczen',
+    db.Column('korepetytor_id', db.String(100), db.ForeignKey('users.id')),
+    db.Column('uczen_id', db.String(100), db.ForeignKey('users.id'))
+)
+
+
+class User(UserMixin, db.Model):
+    __tablename__ = "users"
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user_type = db.Column(db.String(10), nullable=False)  # 'uczen' lub 'korepetytor'
     email = db.Column(db.String(100), unique=True)
     password = db.Column(db.String(100))
     name = db.Column(db.String(100))
     surname = db.Column(db.String(100))
     phone_number = db.Column(db.String(100))
-    #This will act like a List of BlogPost objects attached to each User.
-    #The "author" refers to the author property in the BlogPost class.
-    posts = relationship("Post", back_populates="author")
+    bank_acc_num = db.Column(db.String(100), nullable=True)  # tylko dla korepetytor
+    email_confirmation_code = db.Column(db.String(100), nullable=True)
+    email_confirmed = db.Column(db.Boolean, default=False)
+    posts = relationship("Post", back_populates="author") # tylko dla ucznia
 
-    teacher_id = db.Column(db.Integer, db.ForeignKey("korepetytorzy.id"))
-    teacher = relationship("Uczen", back_populates="students")
-
-
-class Korepetytor(UserMixin, db.Model):
-    __tablename__ = "korepetytorzy"
-    id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(100), unique=True)
-    password = db.Column(db.String(100))
-    name = db.Column(db.String(100))
-    surname = db.Column(db.String(100))
-    phone_number = db.Column(db.String(100))
-    bank_acc_num = db.Column(db.String(100))
-
-    students = relationship("Uczen", back_populates="teacher")
-
-
-class Hours(db.Model):
-    __tablename__ = "godizny"
-
+    korepetytorzy = db.relationship(
+        "User",
+        secondary=association_table,
+        primaryjoin=(association_table.c.uczen_id == id),
+        secondaryjoin=(association_table.c.korepetytor_id == id),
+        backref=db.backref('uczniowie', lazy='dynamic'),
+        lazy='dynamic'
+    )

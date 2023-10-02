@@ -1,0 +1,35 @@
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+{% from "bootstrap5/form.html" import render_form %}
+
+<form method="post" id="tutoringForm">
+    {{ form.hidden_tag() }}
+    {{ form.subject.label }}: {{ form.subject() }}<br>
+    {{ form.hours_per_lesson.label }}: {{ form.hours_per_lesson() }}<br>
+    {{ form.lessons_per_week.label }}: {{ form.lessons_per_week() }}<br>
+
+<h3>Dostępność</h3>
+<div id="availability-section">
+    {% for availability_form in form.availabilities %}
+    <div class="availability">
+        {{ availability_form.day.label }}: {{ availability_form.day() }}<br>
+        {{ availability_form.time_slots.label }}: {{ availability_form.time_slots() }}<br>
+    </div>
+    {% endfor %}
+</div>
+    <button type="button" id="addAvailability">Dodaj kolejną dostępność</button>
+    <br>
+    {{ form.submit() }}
+</form>
+
+$(document).ready(function() {
+    $("#addAvailability").click(function() {
+        // Klonuj pierwszy formularz dostępności
+        var newAvailability = $(".availability:first").clone();
+
+        // Wyczyść wartości w sklonowanym formularzu
+        newAvailability.find("select").val([]);
+
+        // Dodaj nowy formularz dostępności do sekcji
+        $("#availability-section").append(newAvailability);
+    });
+});
