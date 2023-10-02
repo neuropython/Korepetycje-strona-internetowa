@@ -102,15 +102,19 @@ def add():
             lessons_per_week=form.lessons_per_week.data
         )
         db.session.add(post)
+        db.session.commit()
 
-        for availability_data in form.availabilities.data:
-            for time_slot in availability_data['time_slots']:
-                availability = Availability(
-                    day_id=availability_data['day'],
-                    time_slot=time_slot,
-                    post=post
-                )
-                db.session.add(availability)
+        # zbieranie dostępności z formularza
+        for day in range(1, 8):
+            for hour in range(6, 22):
+                availability_value = request.form.get(f'availabilities-{day}-{hour}', '0')
+                if availability_value == '1':
+                    availability = Availability(
+                        day_id=day,
+                        time_slot=f"{hour}- {hour+1}",
+                        post=post
+                    )
+                    db.session.add(availability)
 
         db.session.commit()
         return redirect(url_for('uczen'))
