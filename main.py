@@ -149,6 +149,43 @@ def clients():
     return render_template('clients.html')
 
 
+# ----------------------------------------------- inne ---------------------------------------- #
+@app.route('/availability', methods=["GET", "POST"])
+def add_availability():
+    if not current_user.is_authenticated:
+        flash("Musisz być zalogowany, aby ustawić dostępność!", "error")
+        return redirect(url_for('login'))
+
+    form = AvailabilityForm()
+
+    if request.method == "GET":
+        current_availability = Availability.query.filter_by(user_id=current_user.id).first()
+        if current_availability:
+            for day in form.days:
+                for hour in form.hours:
+                    getattr(form, f"{day}_{hour}").data = getattr(current_availability,
+                                                                  f"{day}_{hour}:00-{hour + 1}:00")
+
+    if form.validate_on_submit():
+        # usuń wcześniejsze dostępności dla tego użytkownika
+        previous_availability = Availability.query.filter_by(user_id=current_user.id).all()
+        for avail in previous_availability:
+            db.session.delete(avail)
+
+        new_availability = Availability(user_id=current_user.id)
+        # dodaj nowe dostępności
+        for day in form.days:
+            for hour in form.hours:
+                setattr(new_availability, f"{day}_{hour}:00-{hour + 1}:00", getattr(form, f"{day}_{hour}").data)
+
+        db.session.add(new_availability)
+        db.session.commit()
+        flash("Dostępność została zaktualizowana!", "success")
+        return redirect(url_for('uczen' if current_user.user_type == 'u' else 'korepetytor'))
+
+    return render_template('add_availability.html', form=form)
+
+
 # ----------------------------------------------- logowanie ---------------------------------------- #
 
 @app.route('/')

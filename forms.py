@@ -1,13 +1,19 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, FloatField, IntegerField, SelectMultipleField, FieldList, FormField, TimeField, SubmitField, SelectField
+from wtforms import StringField, PasswordField, FloatField, IntegerField, SelectMultipleField, FieldList, FormField, TimeField, SubmitField, SelectField, BooleanField
 from wtforms.validators import DataRequired, Email, EqualTo, Length, Regexp
 from flask_ckeditor import CKEditorField
 
 
 # WTForm for creating a blog post
 class AvailabilityForm(FlaskForm):
-    availabilities = FieldList(StringField('Dostępność'), label='Dostępność', min_entries=7*16)
-    submit = SubmitField('Dodaj Post')
+    days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+    hours = range(6, 23)
+
+    for day in days:
+        for hour in hours:
+            locals()[f"{day}_{hour}"] = BooleanField(f"{day} {hour}:00-{hour + 1}:00")
+
+    submit = SubmitField('Dodaj swoją dostępność')
 
 
 class TutoringPostForm(FlaskForm):
@@ -15,7 +21,6 @@ class TutoringPostForm(FlaskForm):
     hours_per_lesson = FloatField('Godziny na lekcję', validators=[DataRequired()])
     lessons_per_week = IntegerField('Lekcje na tydzień', validators=[DataRequired()])
     # Tutaj mamy listę formularzy dostępności dla każdego postu
-    availabilities = FieldList(FormField(AvailabilityForm), label='Dostępność')
     submit = SubmitField('Dodaj Post')
 
 

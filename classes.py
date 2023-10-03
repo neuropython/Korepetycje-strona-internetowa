@@ -8,12 +8,6 @@ db = SQLAlchemy()
 # ------------------------------ tabele dostępnmych dni -----------------------------------  #
 
 
-class DayOfWeek(db.Model):
-    __tablename__ = "days_of_week"
-    id = Column(Integer, primary_key=True)
-    name = Column(String(20), unique=True)  # np. "Poniedziałek", "Wtorek" itp.
-
-
 class Post(db.Model):
     __tablename__ = "posty"
     id = Column(Integer, primary_key=True)
@@ -24,18 +18,21 @@ class Post(db.Model):
     lessons_per_week = Column(Integer, nullable=False)
 
     # Relacja do dostępności
-    availabilities = relationship("Availability", back_populates="post")
+
 
 
 class Availability(db.Model):
     __tablename__ = "availabilities"
     id = Column(Integer, primary_key=True)
-    post_id = Column(Integer, ForeignKey("posty.id"))
-    day_id = Column(Integer, ForeignKey("days_of_week.id"))
-    time_slot = Column(String(20), nullable=False)  # np. "6-7", "7-8" itd.
+    user_id = Column(Integer, ForeignKey("users.id"))
+    user = relationship("User", back_populates="availabilities")
 
-    post = relationship("Post", back_populates="availabilities")
-    day = relationship("DayOfWeek")
+    days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+    hours = range(6, 23)
+    for day in days:
+        for hour in hours:
+            locals()[f"{day}_{hour}:00-{hour + 1}:00"] = Column(Boolean)
+
 
 # ------------------------------ tabele użytkowników -----------------------------------  #
 
@@ -59,6 +56,7 @@ class User(UserMixin, db.Model):
     email_confirmation_code = db.Column(db.String(100), nullable=True)
     email_confirmed = db.Column(db.Boolean, default=False)
     posts = relationship("Post", back_populates="author") # tylko dla ucznia
+    availabilities = relationship("Availability", back_populates="user")
 
     korepetytorzy = db.relationship(
         "User",
