@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dostępność</title>
+    <style>
+        .selected {
+            background-color: green;
+        }
+    </style>
+</head>
+<body>
+    <form method="post">
+        <table border="1" id="availability-table">
+            <thead>
+                <tr>
+                    <th>Godzina / Dzień</th>
+                    {% for day in form.days %}
+                    <th>{{ day }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for hour in form.hours %}
+                <tr>
+                    <td>{{ hour }}:00-{{ hour + 1 }}:00</td>
+                    {% for day in form.days %}
+                    <td>
+                        <input type="checkbox" id="{{ day }}_{{ hour }}" name="{{ day }}_{{ hour }}" hidden {% if getattr(form, day + "_" + hour|string).data %} checked {% endif %}>
+                        <label for="{{ day }}_{{ hour }}" class="{% if form[day + '_' + hour|string].data %} checked {% endif %} "></label>
+                    </td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <input type="submit" value="Dodaj swoją dostępność">
+    </form>
+    <script>
+        const table = document.getElementById("availability-table");
+        table.addEventListener("click", function(event) {
+            const cell = event.target;
+            if (cell.tagName === "LABEL") {
+                const checkbox = document.getElementById(cell.getAttribute("for"));
+                checkbox.checked = !checkbox.checked;
+                if (checkbox.checked) {
+                    cell.classList.add("selected");
+                } else {
+                    cell.classList.remove("selected");
+                }
+            }
+        });
+    </script>
+</body>
+</html>
