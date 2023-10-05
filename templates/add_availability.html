@@ -1,80 +1,42 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dostępność</title>
-<style>
-    .selected {
-        background-color: green;
-    }
-    td {
-        position: relative;
-        width: 50px;
-        height: 50px;
-    }
-    input[type="checkbox"] {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        opacity: 0;
-        z-index: 2;
-        cursor: pointer;
-    }
-    label {
-        display: block;
-        width: 100%;
-        height: 100%;
-        cursor: pointer;
-    }
-</style>
-</head>
-<body>
-    <form method="post">
-        <table border="1" id="availability-table">
+<div class="container">
+    <h2>Dodaj swoją dostępność</h2>
+    <form action="{{ url_for('add_availability') }}" method="post">
+        {{ form.hidden_tag() }}
+        <table class="table">
             <thead>
                 <tr>
-                    <th>Godzina / Dzień</th>
+                    <th>Godzina</th>
                     {% for day in form.days %}
                     <th>{{ day }}</th>
                     {% endfor %}
                 </tr>
             </thead>
             <tbody>
-                {% for hour in form.hours %}
+                {% for row in availability_data %}
                 <tr>
-                    <td>{{ hour }}:00-{{ hour + 1 }}:00</td>
-                    {% for day in form.days %}
+                    <td>{{ row[0] }}:00-{{ row[0] + 1 }}:00</td>
+                    {% for cell in row[1:] %}
                     <td>
-                        <input type="checkbox" id="{{ day }}_{{ hour }}" name="{{ day }}_{{ hour }}" hidden {% if form[day + '_' + hour|string()].data %} checked {% endif %}>
-                        <label for="{{ day }}_{{ hour }}" class="{% if form[day + '_' + hour|string()].data %} selected {% endif %}"></label>
+                        <input type="checkbox" id="{{ cell.id }}" name="{{ cell.id }}" onclick="toggleCellColor(this);" {{ 'checked' if cell.data else '' }}>
                     </td>
                     {% endfor %}
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
-        <input type="submit" value="Dodaj swoją dostępność">
+        <div class="form-group">
+            {{ form.submit(class_="btn btn-primary") }}
+        </div>
     </form>
-    <script>
-        const table = document.getElementById("availability-table");
-        table.addEventListener("click", function(event) {
-            const cell = event.target;
-            if (cell.tagName === "LABEL") {
-                const checkbox = document.getElementById(cell.getAttribute("for"));
-                checkbox.checked = !checkbox.checked;
-                if (checkbox.checked) {
-                    cell.classList.add("selected");
-                } else {
-                    cell.classList.remove("selected");
-                }
-            }
-        });
-            td > label:hover {
-        background-color: rgba(0, 255, 0, 0.2);
+</div>
+
+<script>
+    function toggleCellColor(checkboxElem) {
+        if (checkboxElem.checked) {
+            checkboxElem.parentElement.style.backgroundColor = "green";
+        } else {
+            checkboxElem.parentElement.style.backgroundColor = "";
+        }
     }
-    </script>
-</body>
-</html>
+</script>
+

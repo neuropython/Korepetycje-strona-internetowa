@@ -163,8 +163,7 @@ def add_availability():
         if current_availability:
             for day in form.days:
                 for hour in form.hours:
-                    getattr(form, f"{day}_{hour}").data = getattr(current_availability,
-                                                                  f"{day}_{hour}:00-{hour + 1}:00")
+                    getattr(form, f"{day}_{hour}").data = getattr(current_availability, f"{day}_{hour}:00-{hour + 1}:00")
 
     if form.validate_on_submit():
         # usuń wcześniejsze dostępności dla tego użytkownika
@@ -183,7 +182,15 @@ def add_availability():
         flash("Dostępność została zaktualizowana!", "success")
         return redirect(url_for('uczen' if current_user.user_type == 'u' else 'korepetytor'))
 
-    return render_template('add_availability.html', form=form)
+    availability_data = []
+    for hour in form.hours:
+        row = [hour]
+        for day in form.days:
+            row.append(getattr(form, f"{day}_{hour}"))
+        availability_data.append(row)
+
+    return render_template('add_availability.html', form=form, availability_data=availability_data)
+
 
 
 # ----------------------------------------------- logowanie ---------------------------------------- #
@@ -252,7 +259,7 @@ def login():
                 return redirect(url_for("confirm_email", user_id=f"{user.id}"))
 
             login_user(user)
-            mode = form.who.data
+            mode = 'u' if form.who.data == 'Uczniem' else 'k'
             return redirect(url_for('uczen' if mode == 'u' else 'korepetytor'))
         else:
             flash('Password incorrect, please try again.')

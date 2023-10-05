@@ -6,12 +6,12 @@ from flask_ckeditor import CKEditorField
 
 # WTForm for creating a blog post
 class AvailabilityForm(FlaskForm):
-    days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+    days = ["Pon", "Wt", "Śr", "Czw", "Pt", "Sb", "Nd"]
     hours = range(6, 23)
 
     for day in days:
         for hour in hours:
-            locals()[f"{day}_{hour}"] = BooleanField(f"{day} {hour}:00-{hour + 1}:00")
+            locals()[f"{day}_{hour}"] = BooleanField(f"{day} {hour}:00-{hour + 1}:00", default=False)
 
     submit = SubmitField('Dodaj swoją dostępność')
 
