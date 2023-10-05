@@ -27,7 +27,7 @@ class Availability(db.Model):
     user_id = Column(Integer, ForeignKey("users.id"))
     user = relationship("User", back_populates="availabilities")
 
-    days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+    days = ["Pon", "Wt", "Śr", "Czw", "Pt", "Sb", "Nd"]
     hours = range(6, 23)
     for day in days:
         for hour in hours:
